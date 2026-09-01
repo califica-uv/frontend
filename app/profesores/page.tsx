@@ -18,11 +18,11 @@ import { EmptyState } from "@/components/empty-state";
 import { ErrorState } from "@/components/error-state";
 import { useDebounce } from "@/hooks/use-debounce";
 import { getProfessors } from "@/lib/api";
-import { mockCourses } from "@/lib/mocks";
+import { DEPARTMENT_SUGGESTIONS } from "@/lib/univalle";
 
-const departments = Array.from(
-  new Set(mockCourses.map((c) => c.department).filter((d): d is string => !!d))
-);
+// Antes salían de los mocks, así que en producción el filtro ofrecía
+// departamentos inventados. Ahora usa las unidades académicas reales de la U.
+const departments = DEPARTMENT_SUGGESTIONS;
 
 function ProfessorsPageInner() {
   const searchParams = useSearchParams();

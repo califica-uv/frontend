@@ -13,12 +13,15 @@ import { CourseCombobox } from "@/components/course-combobox";
 import { createProfessor } from "@/lib/api";
 import { useAuth } from "@/hooks/use-auth";
 import type { Course } from "@/lib/types";
+import { DEPARTMENT_SUGGESTIONS } from "@/lib/univalle";
 import { toast } from "sonner";
 import Link from "next/link";
 
 const newProfessorSchema = z.object({
   name: z.string().trim().min(3, "Escribe el nombre completo del profe"),
-  department: z.string().trim().min(2, "¿De qué departamento es?"),
+  // Solo el nombre es obligatorio: pedir más datos frena a quien solo
+  // recuerda al profe y no sabe a qué departamento pertenece.
+  department: z.string().trim().optional(),
   // Proponer profesor ya no exige materias.
   courses: z.array(z.custom<Course>()),
 });
@@ -44,7 +47,7 @@ export default function NewProfessorPage() {
     mutationFn: (values: NewProfessorValues) =>
       createProfessor({
         name: values.name.trim(),
-        department: values.department.trim(),
+        department: values.department?.trim() || undefined,
         courseIds: values.courses.map((c) => c.id),
       }),
     onSuccess: () => {
@@ -103,13 +106,21 @@ export default function NewProfessorPage() {
         </Field>
 
         <Field data-invalid={!!errors.department}>
-          <FieldLabel htmlFor="prof-department">Departamento *</FieldLabel>
+          <FieldLabel htmlFor="prof-department">Departamento (opcional)</FieldLabel>
           <Input
             id="prof-department"
-            placeholder="Ej: Ciencias de la Computación"
+            list="univalle-departments"
+            placeholder="Ej: Escuela de Ingeniería de Sistemas y Computación"
             className="h-11"
             {...register("department")}
           />
+          {/* Sugerencias reales de la U. Es un datalist, no un select: se
+              puede escribir cualquier cosa o dejarlo vacío. */}
+          <datalist id="univalle-departments">
+            {DEPARTMENT_SUGGESTIONS.map((d) => (
+              <option key={d} value={d} />
+            ))}
+          </datalist>
           <FieldError errors={[errors.department]} />
         </Field>
 

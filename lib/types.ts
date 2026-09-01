@@ -31,7 +31,7 @@ export interface Professor {
   id: number;
   name: string;
   slug: string;
-  department: string;
+  department?: string;
   status: ProfessorStatus;
   courses: Course[];
   averageRating: number;
@@ -50,7 +50,7 @@ export interface PendingProfessor {
   id: number;
   name: string;
   slug: string;
-  department: string;
+  department?: string;
   courses: Course[];
   voteCount: number;
   votesNeeded: number;
@@ -141,7 +141,8 @@ export interface PaginatedResponse<T> {
 
 export interface CreateProfessorInput {
   name: string;
-  department: string;
+  // Solo el nombre es obligatorio al proponer un profesor.
+  department?: string;
   // Proponer profesor ya no exige materias.
   courseIds: number[];
 }
