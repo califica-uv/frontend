@@ -1,0 +1,37 @@
+# Render Blueprint for Califica UV — FRONTEND (Next.js).
+#
+# The Go API and the Postgres databases live in the backend repository,
+# which has its own blueprint.
+#
+#   - qa   deploys from the `develop` branch
+#   - prod deploys from the `main` branch
+#
+# `dev` runs locally with `npm run dev`. Free-tier services sleep after
+# 15 minutes of inactivity.
+
+services:
+  - type: web
+    name: califica-uv-web-qa
+    runtime: node
+    plan: free
+    region: oregon
+    branch: develop
+    buildCommand: npm run build:qa
+    startCommand: npm run start
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        value: https://califica-uv-api-qa.onrender.com/api/v1
+
+  # ---------- PROD ----------
+
+  - type: web
+    name: califica-uv-web-prod
+    runtime: node
+    plan: starter
+    region: oregon
+    branch: main
+    buildCommand: npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        value: https://califica-uv-api-prod.onrender.com/api/v1
