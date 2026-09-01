@@ -2,16 +2,20 @@ import { Star } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
 interface RatingBreakdownProps {
-  breakdown: Record<number, number>;
+  // El backend manda las claves como texto ("1".."5"); indexar con número
+  // funciona igual en JS. Se acepta undefined para no reventar si la API
+  // todavía no envía el campo.
+  breakdown?: Record<string, number>;
 }
 
 export function RatingBreakdown({ breakdown }: RatingBreakdownProps) {
-  const total = Object.values(breakdown).reduce((a, b) => a + b, 0) || 1;
+  const counts = breakdown ?? {};
+  const total = Object.values(counts).reduce((a, b) => a + b, 0) || 1;
 
   return (
     <div className="flex flex-col gap-2" aria-label="Distribución de calificaciones">
       {[5, 4, 3, 2, 1].map((star) => {
-        const count = breakdown[star] ?? 0;
+        const count = counts[star] ?? 0;
         const pct = Math.round((count / total) * 100);
         return (
           <div key={star} className="flex items-center gap-3">

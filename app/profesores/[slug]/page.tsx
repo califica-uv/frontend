@@ -134,13 +134,13 @@ export default function ProfessorDetailPage({
             <h2 className="mb-3 font-heading text-xl font-extrabold text-foreground">
               Promedio por materia
             </h2>
-            {professor.courseAverages.length === 0 ? (
+            {(professor.ratingByCourse?.length ?? 0) === 0 ? (
               <p className="text-sm text-muted-foreground">
                 Todavía no hay reseñas con materia para promediar.
               </p>
             ) : (
               <ul className="flex flex-col gap-3">
-                {professor.courseAverages.map((ca) => (
+                {professor.ratingByCourse?.map((ca) => (
                   <li key={ca.course.id} className="flex items-center justify-between gap-3">
                     <span className="text-sm text-foreground">{ca.course.name}</span>
                     <span className="flex items-center gap-2">

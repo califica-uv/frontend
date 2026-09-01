@@ -40,8 +40,11 @@ export interface Professor {
 }
 
 export interface ProfessorDetail extends Professor {
-  ratingBreakdown: Record<1 | 2 | 3 | 4 | 5, number>;
-  courseAverages: CourseAverage[];
+  // Los nombres siguen al JSON del backend: rating_breakdown y
+  // rating_by_course. Antes se llamaban distinto aquí y el detalle reventaba
+  // al leer un campo que la API nunca envía.
+  ratingBreakdown: Record<"1" | "2" | "3" | "4" | "5", number>;
+  ratingByCourse: CourseAverage[];
   // Reseñas que no tienen materia asociada, agregadas aparte.
   reviewsWithoutCourseCount?: number;
 }

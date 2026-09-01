@@ -215,7 +215,7 @@ export const mockProfessorDetails: Record<string, ProfessorDetail> =
       {
         ...p,
         ratingBreakdown: { 1: 2, 2: 3, 3: 6, 4: 12, 5: 15 },
-        courseAverages: p.courses.map((c, i) => ({
+        ratingByCourse: p.courses.map((c, i) => ({
           course: c,
           averageRating: p.averageRating - i * 0.3,
           reviewCount: Math.max(3, p.reviewCount - i * 10),
