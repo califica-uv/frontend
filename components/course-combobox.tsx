@@ -99,7 +99,12 @@ export function CourseCombobox({
             </Button>
           }
         />
-        <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
+        {/* Base UI expone --anchor-width en el Positioner; --radix-* no existe
+            aquí y dejaba el panel sin ancho. min-w sirve de respaldo. */}
+        <PopoverContent
+          className="w-[var(--anchor-width)] min-w-72 p-0"
+          align="start"
+        >
           <Command shouldFilter={false}>
             <CommandInput
               placeholder="Escribe el nombre de la materia..."
